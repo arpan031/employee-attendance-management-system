@@ -14,7 +14,7 @@ const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = getAllowedOrigins();
 
-    // Allow server-to-server requests, Postman, etc.
+    // Allow server-to-server requests and Postman
     if (!origin) {
       return callback(null, true);
     }
@@ -45,4 +45,4 @@ const corsOptions = {
   ]
 };
 
-module.exports = cors(corsOptions);
+module.exports = corsOptions;
