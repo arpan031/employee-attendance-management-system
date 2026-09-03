@@ -526,14 +526,34 @@ a {
 }
 
 .sidebar-close,
-.mobile-menu-button {
+ {
   display: none;
   border: 0;
   background: transparent;
   color: inherit;
   padding: 6px;
   border-radius: 8px;
+  cursor: pointer;
+   justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 60;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
 }
+
+.mobile-menu-button span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--ink);
+  border-radius: 2px;
+}
+
+.mobile-menu-button:has(svg) span {
+  display: none;
+}
+
 
 .main-area {
   flex: 1;
