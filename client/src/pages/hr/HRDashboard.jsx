@@ -183,26 +183,34 @@ const HRDashboard = ({ analyticsOnly = false }) => {
 
                 <Tooltip />
 
-                <Legend />
+                <Legend iconType="circle" />
 
                 <Bar
                   dataKey="present"
                   name="Present"
+                  fill="#10b981"
+                  radius={[4, 4, 0, 0]}
                 />
 
                 <Bar
                   dataKey="late"
                   name="Late"
+                  fill="#b7791f"
+                  radius={[4, 4, 0, 0]}
                 />
 
                 <Bar
                   dataKey="absent"
                   name="Absent"
+                  fill="#c2410c"
+                  radius={[4, 4, 0, 0]}
                 />
 
                 <Bar
                   dataKey="leave"
                   name="Leave"
+                  fill="#142a4c"
+                  radius={[4, 4, 0, 0]}
                 />
               </BarChart>
             </ResponsiveContainer>
