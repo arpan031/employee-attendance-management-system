@@ -3,27 +3,35 @@
 :root {
   --font-body: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: Sora, Inter, system-ui, sans-serif;
+
   --bg: #f8f9fb;
   --ink: #142a4c;
   --muted: #5b6472;
   --muted-light: #98a2ae;
   --border: #e2e5ea;
   --surface: #ffffff;
+
   --navy: #142a4c;
   --navy-dark: #0b1b33;
   --slate: #5b6472;
+
   --emerald: #10b981;
   --emerald-dark: #0a7c5c;
+
   --amber: #b7791f;
   --coral: #c2410c;
+
   --purple: #6d5dfc;
   --purple-dark: #4f46e5;
   --blue: #2563eb;
+
   --grad-primary: linear-gradient(135deg, #10b981 0%, #0a7c5c 100%);
   --grad-sidebar: linear-gradient(180deg, #0b1b33 0%, #142a4c 100%);
+
   font-family: var(--font-body);
   color: var(--ink);
   background: var(--bg);
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -103,6 +111,7 @@ a {
   padding: clamp(20px, 5vw, 40px) 16px;
   padding-top: max(20px, env(safe-area-inset-top));
   padding-bottom: max(20px, env(safe-area-inset-bottom));
+
   background:
     radial-gradient(circle at 15% 20%, rgba(109, 93, 252, 0.12), transparent 35%),
     radial-gradient(circle at 85% 80%, rgba(37, 99, 235, 0.10), transparent 35%),
@@ -518,52 +527,48 @@ a {
   color: inherit;
   padding: 6px;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .mobile-menu-button {
   display: none;
-  border: 0;
   background: transparent;
-  color: var(--ink);
+  border: none;
+  cursor: pointer;
   padding: 8px;
   width: 40px;
   height: 40px;
-  min-width: 40px;
-  min-height: 40px;
-  flex-shrink: 0;
-  border-radius: 8px;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  flex-direction: column;
+  gap: 4.5px;
+  color: var(--ink);
   z-index: 60;
-  position: relative;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.mobile-menu-button::before,
-.mobile-menu-button::after,
+.mobile-menu-button svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
 .mobile-menu-button span {
-  content: '';
   display: block;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   width: 22px;
-  height: 2.5px;
-  background-color: currentColor;
+  height: 2px;
+  background-color: var(--ink);
   border-radius: 2px;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.mobile-menu-button::before {
-  top: 11px;
-}
-
-.mobile-menu-button span {
-  top: 19px;
-}
-
-.mobile-menu-button::after {
-  top: 27px;
+.mobile-menu-button:has(svg) span {
+  display: none;
 }
 
 .main-area {
@@ -941,10 +946,6 @@ a {
   font-size: 11px;
 }
 
-.hero-date {
-  flex-shrink: 0;
-}
-
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -1080,16 +1081,11 @@ a {
 .search-box input {
   width: 100%;
   border: 0;
-  box-shadow: none;
   padding: 10px 12px;
   color: var(--ink);
   background: transparent;
   outline: none;
   font-size: 14px;
-}
-
-.search-box input:focus {
-  box-shadow: none;
 }
 
 .result-count {
@@ -1155,7 +1151,6 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
@@ -1181,7 +1176,7 @@ a {
 }
 
 .attendance-action-card {
-  padding: 26px;
+  padding: 24px;
 }
 
 .attendance-action-info {
@@ -1206,13 +1201,13 @@ a {
 }
 
 .attendance-actions {
-  margin-top: 25px;
+  margin-top: 22px;
   display: flex;
   gap: 10px;
 }
 
 .leave-balance-card {
-  padding: 20px;
+  padding: 18px;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -1244,11 +1239,6 @@ a {
   display: flex;
   justify-content: flex-end;
   gap: 9px;
-}
-
-.dashboard-hero {
-  width: 100%;
-  min-width: 0;
 }
 
 .empty-state {
@@ -1352,7 +1342,7 @@ a {
   color: var(--ink);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1362,7 +1352,7 @@ a {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .sidebar {
     transform: translateX(-100%);
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1379,7 +1369,7 @@ a {
   }
 
   .mobile-menu-button {
-    display: flex !important;
+    display: flex;
   }
 
   .sidebar-overlay {
@@ -1396,13 +1386,33 @@ a {
 
   .navbar {
     height: 60px;
-    padding: 0 14px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .navbar-left {
+    gap: 8px;
+  }
+
+  .navbar-title {
+    max-width: 150px;
+    font-size: 16px;
   }
 
   .navbar-subtitle,
   .navbar-user-info,
-  .navbar-right .search-box {
+  .navbar-user > svg:last-child,
+  .navbar-right .search-box,
+  .hero-date {
     display: none !important;
+  }
+
+  .logout-button span {
+    display: none;
+  }
+
+  .logout-button {
+    padding: 6px;
   }
 
   .content-grid,
@@ -1430,19 +1440,41 @@ a {
   .search-box {
     width: 100%;
   }
-}
 
-@media (max-width: 480px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
+  .attendance-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .attendance-action-info {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .attendance-action-info .status-badge {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .attendance-actions {
+    flex-direction: column;
+  }
+
+  .attendance-actions button {
+    width: 100%;
   }
 
   .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .attendance-summary {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .form-group-full {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 
   .leave-request-row {
@@ -1461,41 +1493,17 @@ a {
     display: none;
   }
 
-  .hero-date {
-    display: none;
-  }
-
-  .attendance-actions {
-    flex-direction: column;
-  }
-
-  .attendance-actions button {
-    width: 100%;
+  .navbar-title {
+    max-width: 120px;
   }
 }
 
 @media (max-width: 360px) {
-  .main-content {
-    padding: 10px 8px;
-  }
-
   .navbar-title {
-    max-width: 110px;
-  }
-
-  .navbar-right {
-    gap: 4px;
-  }
-
-  .stat-card {
-    padding: 12px;
-  }
-
-  .card {
-    padding: 12px;
+    max-width: 100px;
   }
 
   .summary-strip > div {
-    padding: 8px;
+    padding: 9px;
   }
 }
