@@ -1,3 +1,4 @@
+import logo from "../assets/attendpro-logo.png";
 import { BarChart3, CalendarCheck, ClipboardList, Clock3, LayoutDashboard, Users, X, Settings2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -6,17 +7,17 @@ const Sidebar = ({ open, onClose }) => {
   const { isHR, employee } = useAuth();
   const links = isHR
     ? [
-        { to: "/hr", label: "Dashboard", icon: LayoutDashboard },
-        { to: "/hr/employees", label: "Employees", icon: Users },
-        { to: "/hr/attendance", label: "Attendance", icon: Clock3 },
-        { to: "/hr/leaves", label: "Leave Requests", icon: ClipboardList },
-        { to: "/hr/analytics", label: "Analytics", icon: BarChart3 },
-      ]
+      { to: "/hr", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/hr/employees", label: "Employees", icon: Users },
+      { to: "/hr/attendance", label: "Attendance", icon: Clock3 },
+      { to: "/hr/leaves", label: "Leave Requests", icon: ClipboardList },
+      { to: "/hr/analytics", label: "Analytics", icon: BarChart3 },
+    ]
     : [
-        { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-        { to: "/attendance", label: "Attendance", icon: CalendarCheck },
-        { to: "/leave", label: "Leave Management", icon: ClipboardList },
-      ];
+      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/attendance", label: "Attendance", icon: CalendarCheck },
+      { to: "/leave", label: "Leave Management", icon: ClipboardList },
+    ];
 
   return (
     <>
@@ -24,10 +25,18 @@ const Sidebar = ({ open, onClose }) => {
       <aside className={`sidebar ${open ? "sidebar-open" : ""}`}>
         <div className="sidebar-header">
           <div className="brand">
-            <div className="brand-icon"><CalendarCheck size={23} /></div>
-            <div><strong>AttendPro</strong><span>Attendance System</span></div>
+            <img
+              src={logo}
+              alt="AttendPro"
+              className="brand-logo"
+            />
           </div>
-          <button type="button" className="icon-button sidebar-close" onClick={onClose} aria-label="Close menu">
+          <button
+            type="button"
+            className="icon-button sidebar-close"
+            onClick={onClose}
+            aria-label="Close menu"
+          >
             <X size={20} />
           </button>
         </div>
@@ -53,15 +62,15 @@ const Sidebar = ({ open, onClose }) => {
         </nav>
 
         <div className="sidebar-footer">
-          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <div className="avatar" style={{ background:"rgba(255,255,255,.16)", color:"#fff" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div className="avatar" style={{ background: "rgba(255,255,255,.16)", color: "#fff" }}>
               {(employee?.name || "U").charAt(0).toUpperCase()}
             </div>
-            <div style={{ minWidth:0 }}>
-              <strong style={{ display:"block", fontSize:12, color:"#fff", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+            <div style={{ minWidth: 0 }}>
+              <strong style={{ display: "block", fontSize: 12, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {employee?.name || "User"}
               </strong>
-              <span style={{ display:"block", fontSize:10 }}>
+              <span style={{ display: "block", fontSize: 10 }}>
                 {isHR ? "HR Administrator" : employee?.employeeId || "Employee"}
               </span>
             </div>
