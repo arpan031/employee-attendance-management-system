@@ -102,9 +102,6 @@ a {
   touch-action: manipulation;
 }
 
-/* ==========================================================================
-   Auth Pages
-   ========================================================================== */
 
 .auth-page {
   min-height: 100vh;
@@ -298,9 +295,6 @@ a {
   color: var(--purple);
 }
 
-/* ==========================================================================
-   Buttons & Actions
-   ========================================================================== */
 
 .primary-button,
 .secondary-button,
@@ -388,9 +382,6 @@ a {
   text-decoration: underline;
 }
 
-/* ==========================================================================
-   Alerts & Notifications
-   ========================================================================== */
 
 .alert {
   padding: 12px 14px;
@@ -413,9 +404,6 @@ a {
   border: 1px solid #b7ead4;
 }
 
-/* ==========================================================================
-   App Shell, Sidebar, & Header
-   ========================================================================== */
 
 .app-shell {
   min-height: 100vh;
@@ -635,9 +623,6 @@ a {
   background: #fdecea;
 }
 
-/* ==========================================================================
-   Main Content & Dashboard
-   ========================================================================== */
 
 .main-content {
   flex: 1;
@@ -1094,10 +1079,6 @@ a {
   box-shadow: 0 25px 50px -12px rgba(11, 27, 51, 0.25);
 }
 
-/* ==========================================================================
-   Responsive Breakpoints
-   ========================================================================== */
-
 /* Tablets & Small Desktops */
 @media (max-width: 1024px) {
   .stats-grid {
@@ -1203,5 +1184,46 @@ a {
 
   .pagination-button span {
     display: none;
+  }
+}
+
+/* Ensure the hamburger button is visible and properly sized */
+.mobile-menu-button {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink); /* Ensures SVGs with currentColor appear */
+  z-index: 60;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fallback: Automatically draws the 3 horizontal lines if you don't use an SVG icon */
+.mobile-menu-button.hamburger-icon {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 10px 8px;
+}
+
+.mobile-menu-button.hamburger-icon span {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background-color: var(--ink);
+  border-radius: 2px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Force show on screens under 768px */
+@media (max-width: 768px) {
+  .mobile-menu-button,
+  .mobile-menu-button.hamburger-icon {
+    display: flex !important;
   }
 }
