@@ -72,7 +72,7 @@ a {
   text-decoration: none;
 }
 
-/* ---------- AUTH ---------- */
+/*  AUTH  */
 
 .auth-page {
   min-height: 100vh;
@@ -287,7 +287,7 @@ a {
   font-weight: 600;
 }
 
-/* ---------- ALERTS ---------- */
+/*  ALERTS  */
 
 .alert {
   padding: 12px 14px;
@@ -309,7 +309,7 @@ a {
   border: 1px solid #b7ead4;
 }
 
-/* ---------- LAYOUT ---------- */
+/*  LAYOUT  */
 
 .app-shell {
   min-height: 100vh;
@@ -534,7 +534,7 @@ a {
   font-size: 14px;
 }
 
-/* ---------- CARDS ---------- */
+/*  CARDS  */
 
 .stats-grid {
   display: grid;
@@ -775,7 +775,7 @@ a {
   margin-top: 4px;
 }
 
-/* ---------- STATUS ---------- */
+/*  STATUS  */
 
 .status-badge {
   display: inline-flex;
@@ -816,7 +816,7 @@ a {
   color: var(--navy);
 }
 
-/* ---------- TABLE ---------- */
+/*  TABLE  */
 
 .table-wrapper {
   width: 100%;
@@ -983,7 +983,7 @@ a {
   font-size: 11px;
 }
 
-/* ---------- PAGINATION ---------- */
+/*  PAGINATION  */
 
 .pagination {
   margin-top: 18px;
@@ -1029,7 +1029,7 @@ a {
   color: var(--muted-light);
 }
 
-/* ---------- ATTENDANCE ---------- */
+/*  ATTENDANCE  */
 
 .attendance-action-card {
   padding: 26px;
@@ -1062,7 +1062,7 @@ a {
   gap: 10px;
 }
 
-/* ---------- LEAVE ---------- */
+/*  LEAVE  */
 
 .leave-balance-card {
   padding: 20px;
@@ -1099,14 +1099,14 @@ a {
   gap: 9px;
 }
 
-/* ---------- ANALYTICS ---------- */
+/*  ANALYTICS  */
 
 .analytics-chart {
   width: 100%;
   min-height: 350px;
 }
 
-/* ---------- EMPTY / LOADING ---------- */
+/*  EMPTY / LOADING  */
 
 .empty-state {
   min-height: 150px;
@@ -1148,7 +1148,7 @@ a {
   }
 }
 
-/* ---------- MODAL ---------- */
+/*  MODAL  */
 
 .modal-overlay {
   position: fixed;
@@ -1210,7 +1210,7 @@ a {
   color: var(--ink);
 }
 
-/* ---------- MOBILE ---------- */
+/*  MOBILE  */
 
 @media (max-width: 1100px) {
   .stats-grid {
@@ -1399,9 +1399,7 @@ a {
   text-transform: uppercase;
   color: #64748b;
 }
-/* =========================================
-   AttendPro Login Page
-========================================= */
+/* AttendPro Login Page */
 
 .auth-page {
   min-height: 100vh;
@@ -1653,5 +1651,467 @@ a {
 
   .auth-brand h1 {
     font-size: 27px;
+  }
+}
+
+
+
+@media (max-width: 800px) {
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    min-width: 320px;
+    overflow-x: hidden;
+  }
+
+  .app-shell {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .main-area {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+  }
+
+  .main-content {
+    width: 100%;
+    min-width: 0;
+    padding: 16px 14px;
+    overflow-x: hidden;
+  }
+
+  
+
+  .navbar {
+    width: 100%;
+    height: 64px;
+    min-width: 0;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .navbar-left {
+    min-width: 0;
+    flex: 1;
+    gap: 7px;
+  }
+
+  .navbar-title {
+    max-width: 150px;
+    font-size: 17px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .navbar-subtitle {
+    display: none;
+  }
+
+  .navbar-right {
+    flex-shrink: 0;
+    gap: 5px;
+  }
+
+  /* Hide search on phone */
+  .navbar-right .search-box {
+    display: none !important;
+  }
+
+  .mobile-menu-button,
+  .navbar-right > .icon-button,
+  .logout-button {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    flex-shrink: 0;
+  }
+
+  .navbar-user-info,
+  .navbar-user > svg:last-child {
+    display: none;
+  }
+
+  .navbar-user {
+    padding: 0;
+    margin: 0;
+    gap: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .logout-button {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .logout-button span {
+    display: none;
+  }
+
+  
+
+  .page-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-header {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 16px;
+  }
+
+  .page-header h2 {
+    font-size: 22px;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
+
+  
+
+  .dashboard-hero {
+    width: 100%;
+    min-width: 0;
+    padding: 18px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+  }
+
+  .dashboard-hero h2 {
+    font-size: 20px;
+  }
+
+  .dashboard-hero p {
+    font-size: 12px;
+  }
+
+  .hero-date {
+    display: none;
+  }
+
+  
+
+  .stats-grid {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .stats-grid > * {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .stat-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 100px;
+    padding: 16px;
+  }
+
+  .stat-value {
+    font-size: 25px;
+  }
+
+  
+
+  .dashboard-grid {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .dashboard-grid > * {
+    width: 100%;
+    min-width: 0;
+  }
+
+  
+
+  .card {
+    width: 100%;
+    min-width: 0;
+    padding: 16px;
+    margin-bottom: 0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+  }
+
+  .card-header p {
+    font-size: 11px;
+  }
+
+  
+
+  .chart-card {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .analytics-chart {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .recharts-responsive-container {
+    max-width: 100% !important;
+  }
+
+  .recharts-wrapper {
+    max-width: 100%;
+  }
+
+  
+
+  .dashboard-bottom {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .dashboard-bottom > * {
+    width: 100%;
+    min-width: 0;
+  }
+
+  
+
+  .summary-strip {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .summary-strip > div {
+    min-width: 0;
+    padding: 12px;
+  }
+
+  .summary-strip span {
+    font-size: 10px;
+  }
+
+  .summary-strip strong {
+    font-size: 19px;
+  }
+
+  
+
+  .leave-request-row {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  .request-person {
+    min-width: 0;
+  }
+
+  .request-person strong,
+  .request-person span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  
+
+  .activity-item {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .activity-main {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .activity-main strong,
+  .activity-main span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .activity-time {
+    flex-shrink: 0;
+  }
+
+  
+  .table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table {
+    min-width: 800px;
+  }
+}
+
+
+
+
+@media (max-width: 480px) {
+
+  .main-content {
+    padding: 12px 10px;
+  }
+
+  .navbar {
+    height: 60px;
+    padding: 0 9px;
+  }
+
+  .navbar-title {
+    max-width: 125px;
+    font-size: 16px;
+  }
+
+  .mobile-menu-button,
+  .navbar-right > .icon-button,
+  .logout-button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .dashboard-hero {
+    padding: 15px;
+  }
+
+  .dashboard-hero h2 {
+    font-size: 19px;
+  }
+
+  .stat-card {
+    min-height: 96px;
+    padding: 14px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  /* Monthly summary stays 2 × 2 */
+  .summary-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .summary-strip > div {
+    padding: 11px;
+  }
+
+  /* Leave request becomes vertical */
+  .leave-request-row {
+    grid-template-columns: 1fr;
+  }
+
+  .leave-request-row > * {
+    justify-self: start;
+  }
+
+  /* Attendance action buttons */
+  .attendance-actions {
+    flex-direction: column;
+  }
+
+  .attendance-actions button {
+    width: 100%;
+  }
+
+  /* Forms */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-full {
+    grid-column: auto;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar .search-box {
+    width: 100%;
+  }
+}
+
+
+
+
+@media (max-width: 360px) {
+
+  .main-content {
+    padding: 10px 8px;
+  }
+
+  .navbar-title {
+    max-width: 105px;
+  }
+
+  .navbar-right {
+    gap: 3px;
+  }
+
+  .mobile-menu-button,
+  .navbar-right > .icon-button,
+  .logout-button {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+
+  .stat-card {
+    padding: 13px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .summary-strip > div {
+    padding: 10px;
   }
 }
