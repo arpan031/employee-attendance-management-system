@@ -561,7 +561,7 @@ a {
 .mobile-menu-button span {
   display: block;
   width: 22px;
-  height: 2px;
+  height: 2.5px;
   background-color: var(--ink);
   border-radius: 2px;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -802,20 +802,28 @@ a {
 .chart-card {
   width: 100%;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
 .analytics-chart {
-  width: 100%;
-  min-height: 280px;
+  width: 100% !important;
+  height: 320px !important;
+  min-height: 320px !important;
+  position: relative;
 }
 
+.analytics-chart .recharts-responsive-container,
 .recharts-responsive-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 320px !important;
   max-width: 100% !important;
 }
 
 .recharts-wrapper {
-  max-width: 100%;
+  max-width: 100% !important;
 }
 
 .summary-strip {
@@ -1369,7 +1377,7 @@ a {
   }
 
   .mobile-menu-button {
-    display: flex;
+    display: flex !important;
   }
 
   .sidebar-overlay {
@@ -1475,6 +1483,16 @@ a {
 @media (max-width: 480px) {
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .analytics-chart {
+    height: 260px !important;
+    min-height: 260px !important;
+  }
+
+  .analytics-chart .recharts-responsive-container,
+  .recharts-responsive-container {
+    min-height: 260px !important;
   }
 
   .leave-request-row {
