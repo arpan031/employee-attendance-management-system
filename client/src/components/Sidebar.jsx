@@ -1,134 +1,74 @@
-import {
-  BarChart3,
-  CalendarCheck,
-  ClipboardList,
-  Clock3,
-  LayoutDashboard,
-  Users,
-  X
-} from "lucide-react";
-
+import { BarChart3, CalendarCheck, ClipboardList, Clock3, LayoutDashboard, Users, X, Settings2 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Sidebar = ({ open, onClose }) => {
-  const { isHR } = useAuth();
-
-  const employeeLinks = [
-    {
-      to: "/dashboard",
-      label: "Dashboard",
-      icon: LayoutDashboard
-    },
-    {
-      to: "/attendance",
-      label: "Attendance",
-      icon: CalendarCheck
-    },
-    {
-      to: "/leave",
-      label: "Leave",
-      icon: ClipboardList
-    }
-  ];
-
-  const hrLinks = [
-    {
-      to: "/hr",
-      label: "HR Dashboard",
-      icon: LayoutDashboard
-    },
-    {
-      to: "/hr/employees",
-      label: "Employees",
-      icon: Users
-    },
-    {
-      to: "/hr/attendance",
-      label: "Attendance",
-      icon: Clock3
-    },
-    {
-      to: "/hr/leaves",
-      label: "Leave Requests",
-      icon: ClipboardList
-    },
-    {
-      to: "/hr/analytics",
-      label: "Analytics",
-      icon: BarChart3
-    }
-  ];
-
-  const links = isHR ? hrLinks : employeeLinks;
+  const { isHR, employee } = useAuth();
+  const links = isHR
+    ? [
+        { to: "/hr", label: "Dashboard", icon: LayoutDashboard },
+        { to: "/hr/employees", label: "Employees", icon: Users },
+        { to: "/hr/attendance", label: "Attendance", icon: Clock3 },
+        { to: "/hr/leaves", label: "Leave Requests", icon: ClipboardList },
+        { to: "/hr/analytics", label: "Analytics", icon: BarChart3 },
+      ]
+    : [
+        { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+        { to: "/attendance", label: "Attendance", icon: CalendarCheck },
+        { to: "/leave", label: "Leave Management", icon: ClipboardList },
+      ];
 
   return (
     <>
-      {open && (
-        <div
-          className="sidebar-overlay"
-          onClick={onClose}
-          aria-hidden="true"
-        />
-      )}
-
+      {open && <div className="sidebar-overlay" onClick={onClose} aria-hidden="true" />}
       <aside className={`sidebar ${open ? "sidebar-open" : ""}`}>
         <div className="sidebar-header">
           <div className="brand">
-            <div className="brand-icon">
-              <CalendarCheck size={24} />
-            </div>
-
-            <div>
-              <strong>AttendPro</strong>
-              <span>Management System</span>
-            </div>
+            <div className="brand-icon"><CalendarCheck size={23} /></div>
+            <div><strong>AttendPro</strong><span>Attendance System</span></div>
           </div>
-
-          <button
-            type="button"
-            className="icon-button sidebar-close"
-            onClick={onClose}
-            aria-label="Close menu"
-          >
+          <button type="button" className="icon-button sidebar-close" onClick={onClose} aria-label="Close menu">
             <X size={20} />
           </button>
         </div>
 
         <nav className="sidebar-nav">
-          <p className="sidebar-section-title">
-            {isHR ? "HR Management" : "Employee"}
-          </p>
-
-          {links.map((link) => {
-            const Icon = link.icon;
-
-            return (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.to === "/dashboard" || link.to === "/hr"}
-                className={({ isActive }) =>
-                  `sidebar-link ${
-                    isActive ? "active" : ""
-                  }`
-                }
-                onClick={onClose}
-              >
-                <Icon size={19} />
-                <span>{link.label}</span>
-              </NavLink>
-            );
-          })}
+          <p className="sidebar-section-title">{isHR ? "Workspace" : "My Workspace"}</p>
+          {links.map(({ to, label, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === "/dashboard" || to === "/hr"}
+              className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
+              onClick={onClose}
+            >
+              <Icon size={18} /><span>{label}</span>
+            </NavLink>
+          ))}
+          {!isHR && (
+            <div className="sidebar-link" style={{ opacity: .5, cursor: "default" }}>
+              <Settings2 size={18} /><span>Settings</span>
+            </div>
+          )}
         </nav>
 
         <div className="sidebar-footer">
-          <p>Employee Attendance System</p>
-          <span>v1.0.0</span>
+          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <div className="avatar" style={{ background:"rgba(255,255,255,.16)", color:"#fff" }}>
+              {(employee?.name || "U").charAt(0).toUpperCase()}
+            </div>
+            <div style={{ minWidth:0 }}>
+              <strong style={{ display:"block", fontSize:12, color:"#fff", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                {employee?.name || "User"}
+              </strong>
+              <span style={{ display:"block", fontSize:10 }}>
+                {isHR ? "HR Administrator" : employee?.employeeId || "Employee"}
+              </span>
+            </div>
+          </div>
         </div>
       </aside>
     </>
   );
 };
-
 export default Sidebar;

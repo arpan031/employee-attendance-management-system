@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 const Employee = require("../models/Employee");
 const Attendance = require("../models/Attendance");
 const Leave = require("../models/Leave");
@@ -243,6 +245,94 @@ const getAnalytics = async (
         summary,
 
         daily
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* HR - Create Employee */
+
+const createEmployee = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      employeeId,
+      department,
+      designation,
+      role,
+      leaveBalance
+    } = req.body;
+
+    const normalizedEmail =
+      email.toLowerCase().trim();
+
+    const normalizedEmployeeId =
+      employeeId.toUpperCase().trim();
+
+    const existingEmployee =
+      await Employee.findOne({
+        $or: [
+          { email: normalizedEmail },
+          {
+            employeeId:
+              normalizedEmployeeId
+          }
+        ]
+      });
+
+    if (existingEmployee) {
+      return res.status(409).json({
+        success: false,
+        message:
+          existingEmployee.email ===
+          normalizedEmail
+            ? "Email is already registered"
+            : "Employee ID is already registered"
+      });
+    }
+
+    const hashedPassword =
+      await bcrypt.hash(password, 12);
+
+    const employee =
+      await Employee.create({
+        name: name.trim(),
+        email: normalizedEmail,
+        password: hashedPassword,
+        employeeId: normalizedEmployeeId,
+        department: department.trim(),
+        designation: designation.trim(),
+        role:
+          role === "hr" ? "hr" : "employee",
+        ...(leaveBalance !== undefined && {
+          leaveBalance: Number(leaveBalance)
+        })
+      });
+
+    return res.status(201).json({
+      success: true,
+      message:
+        "Employee added successfully",
+
+      employee: {
+        id: employee._id,
+        name: employee.name,
+        email: employee.email,
+        employeeId: employee.employeeId,
+        department: employee.department,
+        designation: employee.designation,
+        role: employee.role,
+        joiningDate: employee.joiningDate,
+        leaveBalance: employee.leaveBalance,
+        isActive: employee.isActive
       }
     });
   } catch (error) {
@@ -548,10 +638,70 @@ const toggleEmployeeStatus = async (
   }
 };
 
+/* HR - Delete Employee */
+
+const deleteEmployee = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const {
+      id
+    } = req.params;
+
+    if (
+      id ===
+      req.employee._id.toString()
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "You cannot delete your own HR account"
+      });
+    }
+
+    const employee =
+      await Employee.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Employee not found"
+      });
+    }
+
+    await Promise.all([
+      Attendance.deleteMany({
+        employeeId: employee._id
+      }),
+
+      Leave.deleteMany({
+        employeeId: employee._id
+      }),
+
+      Employee.findByIdAndDelete(
+        employee._id
+      )
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "Employee deleted successfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getDashboard,
   getAnalytics,
+  createEmployee,
   getEmployees,
   getAllAttendance,
-  toggleEmployeeStatus
+  toggleEmployeeStatus,
+  deleteEmployee
 };

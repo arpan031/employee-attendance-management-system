@@ -1148,6 +1148,68 @@ a {
   }
 }
 
+/* ---------- MODAL ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(11, 27, 51, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 30px 70px rgba(11, 27, 51, 0.35);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.modal-close {
+  border: 0;
+  background: #eef1f5;
+  color: var(--muted);
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #e1e6ec;
+  color: var(--ink);
+}
+
 /* ---------- MOBILE ---------- */
 
 @media (max-width: 1100px) {

@@ -3,14 +3,22 @@ const express = require("express");
 const {
   getDashboard,
   getAnalytics,
+  createEmployee,
   getEmployees,
   getAllAttendance,
-  toggleEmployeeStatus
+  toggleEmployeeStatus,
+  deleteEmployee
 } = require("../controllers/hrController");
 
 const protect = require("../middleware/authMiddleware");
 
 const authorize = require("../middleware/roleMiddleware");
+
+const validate = require("../middleware/validateMiddleware");
+
+const {
+  createEmployeeValidator
+} = require("../validators/hrValidator");
 
 const router = express.Router();
 
@@ -38,6 +46,13 @@ router.get(
 
 /* Employee Management */
 
+router.post(
+  "/employees",
+  createEmployeeValidator,
+  validate,
+  createEmployee
+);
+
 router.get(
   "/employees",
   getEmployees
@@ -46,6 +61,11 @@ router.get(
 router.patch(
   "/employees/:id/status",
   toggleEmployeeStatus
+);
+
+router.delete(
+  "/employees/:id",
+  deleteEmployee
 );
 
 /* Attendance Management */
