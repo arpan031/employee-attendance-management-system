@@ -231,28 +231,28 @@ const HRDashboard = ({ analyticsOnly = false }) => {
           </div>
 
           <div className="summary-strip">
-            <div>
+            <div className="summary-present">
               <span>Present</span>
               <strong>
                 {analytics.summary?.present || 0}
               </strong>
             </div>
 
-            <div>
+            <div className="summary-late">
               <span>Late</span>
               <strong>
                 {analytics.summary?.late || 0}
               </strong>
             </div>
 
-            <div>
+            <div className="summary-absent">
               <span>Absent</span>
               <strong>
                 {analytics.summary?.absent || 0}
               </strong>
             </div>
 
-            <div>
+            <div className="summary-leave">
               <span>Leave</span>
               <strong>
                 {analytics.summary?.leave || 0}
