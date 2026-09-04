@@ -14,6 +14,12 @@ This project was built to satisfy the following assignment requirements:
 
 ---
 
+##  Live Demo
+
+**Production:** https://attendpro-seven.vercel.app
+
+**GitHub:** https://github.com/arpan031/employee-attendance-management-system
+
 ## Table of Contents
 
 1. [Feature Overview](#feature-overview)
@@ -33,12 +39,6 @@ This project was built to satisfy the following assignment requirements:
 15. [Future Improvements](#future-improvements)
 
 ---
-
-##  Live Demo
-
-**Production:** https://attendpro-seven.vercel.app
-
-**GitHub:** https://github.com/arpan031/employee-attendance-management-system
 
 ## Feature Overview
 
@@ -491,7 +491,8 @@ Employee ID: EMP001
 ## Author
 
 **Arpan Ghosh**
+**Production:** https://attendpro-seven.vercel.app
 
 **GitHub:** https://github.com/arpan031/employee-attendance-management-system
 
-**Production:** https://attendpro-seven.vercel.app
+
