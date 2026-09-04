@@ -6,8 +6,34 @@ const Leave = require("../models/Leave");
 
 const {
   getLocalDateKey,
-  getDateRangeForMonth
+  getDateRangeForMonth,
+  addDaysToDateKey,
+  daysBetweenDateKeys,
+  formatWeekRangeLabel,
+  parseDateOnly
 } = require("../utils/dateUtils");
+
+/* Percentage change vs a previous value.
+ * Returns 0 when there is nothing to compare against
+ * and the current value is also zero, and +100 when
+ * something appeared where there was previously nothing. */
+
+const computeTrend = (
+  current,
+  previous
+) => {
+  if (!previous) {
+    return current > 0 ? 100 : 0;
+  }
+
+  return (
+    Math.round(
+      ((current - previous) /
+        previous) *
+        1000
+    ) / 10
+  );
+};
 
 /* HR Dashboard */
 
@@ -21,14 +47,40 @@ const getDashboard = async (
       new Date()
     );
 
+    const lastWeekDay =
+      addDaysToDateKey(today, -7);
+
+    const lastWeekDayEnd =
+      addDaysToDateKey(lastWeekDay, 1);
+
     const [
       totalEmployees,
+      totalEmployeesLastWeek,
+
       presentToday,
+      presentLastWeek,
+
       lateToday,
+
+      halfDayToday,
+      halfDayLastWeek,
+
+      absentToday,
+      absentLastWeek,
+
       pendingLeaves
     ] = await Promise.all([
       Employee.countDocuments({
         role: "employee"
+      }),
+
+      Employee.countDocuments({
+        role: "employee",
+        joiningDate: {
+          $lt: parseDateOnly(
+            lastWeekDayEnd
+          )
+        }
       }),
 
       Attendance.countDocuments({
@@ -43,14 +95,90 @@ const getDashboard = async (
       }),
 
       Attendance.countDocuments({
+        date: lastWeekDay,
+        status: {
+          $in: [
+            "Present",
+            "Late",
+            "Half Day"
+          ]
+        }
+      }),
+
+      Attendance.countDocuments({
         date: today,
         status: "Late"
+      }),
+
+      Attendance.countDocuments({
+        date: today,
+        status: "Half Day"
+      }),
+
+      Attendance.countDocuments({
+        date: lastWeekDay,
+        status: "Half Day"
+      }),
+
+      Attendance.countDocuments({
+        date: today,
+        status: "Absent"
+      }),
+
+      Attendance.countDocuments({
+        date: lastWeekDay,
+        status: "Absent"
       }),
 
       Leave.countDocuments({
         status: "Pending"
       })
     ]);
+
+    const attendanceRate =
+      totalEmployees > 0
+        ? Math.round(
+            (presentToday /
+              totalEmployees) *
+              1000
+          ) / 10
+        : 0;
+
+    const attendanceRateLastWeek =
+      totalEmployeesLastWeek > 0
+        ? Math.round(
+            (presentLastWeek /
+              totalEmployeesLastWeek) *
+              1000
+          ) / 10
+        : 0;
+
+    const trends = {
+      totalEmployees: computeTrend(
+        totalEmployees,
+        totalEmployeesLastWeek
+      ),
+
+      presentToday: computeTrend(
+        presentToday,
+        presentLastWeek
+      ),
+
+      halfDayToday: computeTrend(
+        halfDayToday,
+        halfDayLastWeek
+      ),
+
+      absentToday: computeTrend(
+        absentToday,
+        absentLastWeek
+      ),
+
+      attendanceRate: computeTrend(
+        attendanceRate,
+        attendanceRateLastWeek
+      )
+    };
 
     return res.status(200).json({
       success: true,
@@ -59,7 +187,11 @@ const getDashboard = async (
         totalEmployees,
         presentToday,
         lateToday,
-        pendingLeaves
+        halfDayToday,
+        absentToday,
+        pendingLeaves,
+        attendanceRate,
+        trends
       }
     });
   } catch (error) {
@@ -235,6 +367,290 @@ const getAnalytics = async (
           a.date.localeCompare(b.date)
       );
 
+    /*
+     * Trailing 14-week window (independent of the
+     * calendar-month view above) used to build:
+     *  - last7Days: exact rolling 7-day series for
+     *    the "Attendance Overview" chart
+     *  - weeklyTrend: 7 weekly presence-rate buckets
+     *    plus a comparison against the previous 7
+     *    weeks, for the "Attendance Trend" chart
+     */
+
+    const today = getLocalDateKey(
+      new Date()
+    );
+
+    const trendRangeStart =
+      addDaysToDateKey(today, -97);
+
+    const trendRecords =
+      await Attendance.aggregate([
+        {
+          $match: {
+            date: {
+              $gte: trendRangeStart,
+              $lte: today
+            }
+          }
+        },
+
+        {
+          $group: {
+            _id: {
+              date: "$date",
+              status: "$status"
+            },
+
+            count: {
+              $sum: 1
+            }
+          }
+        }
+      ]);
+
+    const dateCounts = {};
+
+    trendRecords.forEach((item) => {
+      const date = item._id.date;
+
+      if (!dateCounts[date]) {
+        dateCounts[date] = {
+          present: 0,
+          late: 0,
+          halfDay: 0,
+          absent: 0,
+          leave: 0
+        };
+      }
+
+      const count = item.count || 0;
+
+      switch (item._id.status) {
+        case "Present":
+          dateCounts[date].present +=
+            count;
+          break;
+
+        case "Late":
+          dateCounts[date].late +=
+            count;
+          break;
+
+        case "Half Day":
+          dateCounts[date].halfDay +=
+            count;
+          break;
+
+        case "Absent":
+          dateCounts[date].absent +=
+            count;
+          break;
+
+        case "Leave":
+          dateCounts[date].leave +=
+            count;
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    const emptyDay = () => ({
+      present: 0,
+      late: 0,
+      halfDay: 0,
+      absent: 0,
+      leave: 0
+    });
+
+    /* Last 7 calendar days, oldest first */
+
+    const last7Days = [];
+
+    for (let i = 6; i >= 0; i -= 1) {
+      const date = addDaysToDateKey(
+        today,
+        -i
+      );
+
+      const counts =
+        dateCounts[date] || emptyDay();
+
+      last7Days.push({
+        date,
+        ...counts
+      });
+    }
+
+    /* Bucket every date in the 14-week window
+     * into which "week" it belongs (0 = most
+     * recent 7 days, 13 = oldest) */
+
+    const weekBuckets = Array.from(
+      { length: 14 },
+      () => emptyDay()
+    );
+
+    Object.keys(dateCounts).forEach(
+      (date) => {
+        const dayDiff =
+          daysBetweenDateKeys(
+            date,
+            today
+          );
+
+        const weekIndex = Math.floor(
+          dayDiff / 7
+        );
+
+        if (
+          weekIndex >= 0 &&
+          weekIndex < 14
+        ) {
+          const bucket =
+            weekBuckets[weekIndex];
+
+          const counts =
+            dateCounts[date];
+
+          bucket.present +=
+            counts.present;
+          bucket.late += counts.late;
+          bucket.halfDay +=
+            counts.halfDay;
+          bucket.absent +=
+            counts.absent;
+          bucket.leave += counts.leave;
+        }
+      }
+    );
+
+    const presenceRateFor = (
+      bucket
+    ) => {
+      const tracked =
+        bucket.present +
+        bucket.late +
+        bucket.halfDay +
+        bucket.absent +
+        bucket.leave;
+
+      if (tracked === 0) {
+        return 0;
+      }
+
+      return (
+        Math.round(
+          ((bucket.present +
+            bucket.late +
+            bucket.halfDay) /
+            tracked) *
+            1000
+        ) / 10
+      );
+    };
+
+    /* Weeks 0-6 = current 7 weeks, oldest first */
+
+    const currentWeeks = [];
+
+    for (let index = 6; index >= 0; index -= 1) {
+      const weekEnd = addDaysToDateKey(
+        today,
+        -(7 * index)
+      );
+
+      const weekStart =
+        addDaysToDateKey(
+          weekEnd,
+          -6
+        );
+
+      const bucket = weekBuckets[index];
+
+      currentWeeks.push({
+        weekStart,
+        weekEnd,
+        label: formatWeekRangeLabel(
+          weekStart,
+          weekEnd
+        ),
+        presenceRate:
+          presenceRateFor(bucket),
+        present: bucket.present,
+        late: bucket.late,
+        halfDay: bucket.halfDay,
+        absent: bucket.absent,
+        leave: bucket.leave
+      });
+    }
+
+    const previousWeekRates =
+      weekBuckets
+        .slice(7, 14)
+        .map(presenceRateFor)
+        .filter(
+          (rate, index) =>
+            weekBuckets[7 + index]
+              .present +
+              weekBuckets[7 + index]
+                .late +
+              weekBuckets[7 + index]
+                .halfDay +
+              weekBuckets[7 + index]
+                .absent +
+              weekBuckets[7 + index]
+                .leave >
+            0
+        );
+
+    const previousAverageRate =
+      previousWeekRates.length > 0
+        ? Math.round(
+            (previousWeekRates.reduce(
+              (sum, rate) =>
+                sum + rate,
+              0
+            ) /
+              previousWeekRates.length) *
+              10
+          ) / 10
+        : 0;
+
+    const averageRate =
+      Math.round(
+        (currentWeeks.reduce(
+          (sum, week) =>
+            sum + week.presenceRate,
+          0
+        ) /
+          currentWeeks.length) *
+          10
+      ) / 10;
+
+    const bestWeek = currentWeeks.reduce(
+      (best, week) =>
+        !best ||
+        week.presenceRate >
+          best.presenceRate
+          ? week
+          : best,
+      null
+    );
+
+    const weeklyTrend = {
+      weeks: currentWeeks,
+      bestWeek,
+      averageRate,
+      previousAverageRate,
+      trendVsPrevious: computeTrend(
+        averageRate,
+        previousAverageRate
+      )
+    };
+
     return res.status(200).json({
       success: true,
 
@@ -244,7 +660,10 @@ const getAnalytics = async (
 
         summary,
 
-        daily
+        daily,
+
+        last7Days,
+        weeklyTrend
       }
     });
   } catch (error) {
