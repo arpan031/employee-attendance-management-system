@@ -1,3 +1,4 @@
+import logo from "../assets/attendpro-icon.svg";
 import {
   BarChart3,
   CalendarCheck,
@@ -75,12 +76,7 @@ const Sidebar = ({ open, onClose }) => {
       <aside className={`sidebar ${open ? "sidebar-open" : ""}`}>
         <div className="sidebar-header">
           <div className="brand">
-            <img
-              src="/assets/attendpro-icon.svg"
-              alt="AttendPro logo"
-              className="brand-icon-img"
-            />
-
+            <img src={logo} alt="Logo" />
             <div>
               <strong>AttendPro</strong>
               <span>Management System</span>
