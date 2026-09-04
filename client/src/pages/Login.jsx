@@ -103,7 +103,7 @@ const Login = () => {
           <img
             src={logo}
             alt="AttendPro"
-            className="login-logo"
+            className="auth-logo"
           />
 
           <div className="login-welcome">
