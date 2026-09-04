@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  CalendarCheck,
   Eye,
   EyeOff,
   Lock,
-  Mail
+  Mail,
+  ShieldCheck
 } from "lucide-react";
+import logo from "../assets/attendpro-logo-login.png";
 import {
   Link,
   useLocation,
@@ -87,7 +88,7 @@ const Login = () => {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Login failed. Please check your credentials."
+        "Login failed. Please check your credentials."
       );
     } finally {
       setLoading(false);
@@ -98,8 +99,19 @@ const Login = () => {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-brand">
-          <div className="auth-brand-icon">
-            <CalendarCheck size={30} />
+
+          <img
+            src={logo}
+            alt="AttendPro"
+            className="login-logo"
+          />
+
+          <div className="login-welcome">
+            <div className="welcome-icon">
+              <ShieldCheck size={18} />
+            </div>
+
+            <span>Secure Employee Portal</span>
           </div>
 
           <h1>Welcome Back</h1>
@@ -107,6 +119,7 @@ const Login = () => {
           <p>
             Sign in to manage your attendance
           </p>
+
         </div>
 
         {error && (
@@ -194,13 +207,6 @@ const Login = () => {
               : "Sign In"}
           </button>
         </form>
-
-        <p className="auth-footer">
-          Don't have an account?{" "}
-          <Link to="/register">
-            Create an account
-          </Link>
-        </p>
       </div>
     </div>
   );
