@@ -1,17 +1,27 @@
 const cors = require("cors");
 
 const getAllowedOrigins = () => {
-  return (process.env.CLIENT_URL || "http://localhost:5173,https://attendpro-seven.vercel.app")
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean);
+  const origins = [
+    process.env.CLIENT_URL,
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : null,
+    "http://localhost:5173"
+  ];
+
+  return [...new Set(
+    origins
+      .filter(Boolean)
+      .flatMap((origin) =>
+        origin.split(",").map((value) => value.trim())
+      )
+  )];
 };
 
 const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = getAllowedOrigins();
 
-    // Allow server-to-server requests and tools such as Postman
     if (!origin) {
       return callback(null, true);
     }
@@ -19,6 +29,11 @@ const corsOptions = {
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
+
+    console.error(
+      `CORS blocked origin: ${origin}`,
+      allowedOrigins
+    );
 
     return callback(
       new Error("Origin is not allowed by CORS")
