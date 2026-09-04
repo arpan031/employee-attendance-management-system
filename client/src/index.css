@@ -371,9 +371,12 @@ a {
 .brand-icon-img {
   width: 42px;
   height: 42px;
+  max-width: 42px;
+  max-height: 42px;
   flex-shrink: 0;
+  display: block;
+  object-fit: contain;
 }
-
 .brand strong {
   display: block;
   font-size: 17px;
