@@ -76,7 +76,11 @@ const Sidebar = ({ open, onClose }) => {
       <aside className={`sidebar ${open ? "sidebar-open" : ""}`}>
         <div className="sidebar-header">
           <div className="brand">
-            <img src={logo} alt="Logo" />
+            <img
+              src={logo}
+              alt="AttendPro Logo"
+              className="brand-icon-img"
+              />
             <div>
               <strong>AttendPro</strong>
               <span>Management System</span>
