@@ -150,6 +150,50 @@ const compareDateKeys = (
   return 0;
 };
 
+/* Whole days between two YYYY-MM-DD keys (b - a) */
+
+const daysBetweenDateKeys = (
+  a,
+  b
+) => {
+  const dateA = parseDateOnly(a);
+  const dateB = parseDateOnly(b);
+
+  return Math.round(
+    (dateB.getTime() -
+      dateA.getTime()) /
+      86400000
+  );
+};
+
+/* Short human label for a date key, e.g. "Sep 4" */
+
+const formatDateKeyShort = (
+  dateKey
+) => {
+  const date = parseDateOnly(dateKey);
+
+  return new Intl.DateTimeFormat(
+    "en-US",
+    {
+      timeZone: "UTC",
+      month: "short",
+      day: "numeric"
+    }
+  ).format(date);
+};
+
+/* Short label for a week range, e.g. "Aug 29 - Sep 4" */
+
+const formatWeekRangeLabel = (
+  startKey,
+  endKey
+) => {
+  return `${formatDateKeyShort(
+    startKey
+  )} - ${formatDateKeyShort(endKey)}`;
+};
+
 module.exports = {
   TIME_ZONE,
   getZonedParts,
@@ -158,5 +202,8 @@ module.exports = {
   parseDateOnly,
   addDaysToDateKey,
   getDateRangeForMonth,
-  compareDateKeys
+  compareDateKeys,
+  daysBetweenDateKeys,
+  formatDateKeyShort,
+  formatWeekRangeLabel
 };
